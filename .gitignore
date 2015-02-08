@@ -1,0 +1,6 @@
+node_modules/
+app/bower_components/
+app/scripts/key.js
+dist/
+.sass-cache/
+.DS_Store

@@ -1,0 +1,53 @@
+.card-header {
+	width: 100%;
+	padding-top: 6px;
+	padding-bottom: 0px;
+	padding-left: 12px;
+	padding-right: 12px;
+	margin: -12px -12px 0 -12px;
+	text-transform: uppercase;
+	font-weight: 100;
+	letter-spacing: 1px;
+	color: #333;
+	line-height: 40px;
+	font-size: 18px;
+	color: $text-color;
+	text-shadow: $text-shadow;
+	background-color: $overlay-mass-color;
+}
+
+.card-actions {
+	@extend .list;
+	margin-top: 12px;
+	margin-bottom: 4px;
+	li {
+		>a {
+			color: $text-color;
+			background-color: transparent;
+			border: 1px solid $passive-color;
+			display: inline-block;
+			text-transform: initial;
+			font-size: 12px;
+			line-height: 2em;
+			font-weight: 600;
+			text-decoration: none;
+			border-radius: 3px;
+			padding: 1px 8px 0px 8px;
+			margin-right: 2px;
+		}
+		>a:hover {
+			color: $text-color;
+			border: 1px solid $highlight-color;
+			background-color: $highlight-overlay;
+			text-decoration: none;
+		}
+	}
+}
+
+.card-content {}
+
+.card {
+	padding: 12px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.0), 0 2px 2px rgba(0, 0, 0, 0.3), 0 2px 100px rgba(0, 0, 0, 0.2) inset;
+	background-color: $overlay-color;
+}

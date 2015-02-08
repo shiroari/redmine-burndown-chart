@@ -1,0 +1,51 @@
+.card-header {
+	width: 100%;
+	padding-top: 6px;
+	padding-bottom: 0px;
+	padding-left: 13px;
+	padding-right: 13px;
+	background-color: tomato;
+	color: #fff;
+	line-height: 40px;
+	text-transform: uppercase;
+	font-weight: 600;
+	font-size: 18px;
+	margin: -13px -13px 0 -13px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+}
+
+.card-actions {
+	@extend .list;
+	margin-top: 12px;
+	margin-bottom: 4px;
+	li {
+		>a {
+			color: #666;
+			background-color: #f3f3f3;
+			display: inline-block;
+			text-transform: initial;
+			font-size: 12px;
+			line-height: 2em;
+			font-weight: 600;
+			text-decoration: none;
+			border-radius: 3px;
+			padding: 1px 8px 0px 8px;
+			margin-right: 2px;
+		}
+		>a:hover {
+			color: #fff;
+			background-color: tomato;
+			text-decoration: none;
+		}
+	}
+}
+
+.card-content {}
+
+.card {
+	background-color: #fff;
+	border-radius: 6px;
+	padding: 12px;
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.1);
+}

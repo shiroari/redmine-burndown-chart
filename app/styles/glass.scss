@@ -1,0 +1,46 @@
+/*
+$overlay-color: rgba(255, 255, 255, .3);
+$overlay-mass-color: rgba(255, 255, 255, .1);
+$text-color: rgba(0, 0, 0, 0.8);
+$text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+*/
+
+$overlay-color: rgba(0, 0, 0, .5);
+$overlay-mass-color: rgba(0, 0, 0, .2);
+$text-color: rgba(255, 255, 255, .8);
+$text-shadow: 1px 1px 1px rgba(0, 0 , 0, .5);
+$highlight-overlay: rgba(255,255,255,.3);
+$highlight-color: rgba(255, 255, 255, .8);
+$highlight-overlay: rgba(255,255,255,.3);
+$passive-color: rgba(255,255,255,.3);
+
+/**/
+
+@import "commons";
+@import "glass/page";
+@import "glass/card";
+@import "glass/card_props";
+@import "glass/card_tbl";
+
+body {
+	font-family: "Helvetica Neue", sans-serif;
+	background-image: -webkit-linear-gradient(top left, #474BB7 0%, #bb167D 40%, #3B6CB7 90%, #3F39EF 100%);
+	/*background: linear-gradient(60deg, #15b6e6 0%, #43ac91 60%, #15b6e6 100%);*/
+}
+
+text {
+	fill: $text-color !important;
+	opacity: 0.8 !important;
+}
+
+/*
+body {
+	background-size: 300% 300%;
+	animation: bganimation 16s ease infinite;
+}
+@keyframes bganimation {
+    0%{background-position:87% 0%}
+    50%{background-position:14% 100%}
+    100%{background-position:87% 0%}
+}
+*/

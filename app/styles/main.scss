@@ -1,0 +1,54 @@
+/*
+$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+*/
+
+@media screen and (min-width: 768px) {}
+
+html {
+	
+}
+
+body {
+	margin: 0;
+}
+
+#view {
+	
+	margin: 0 auto;
+	width: 60%;
+	
+	> div {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+}
+
+.chartView {
+	min-height: 260px;
+}
+
+.chartView svg {
+	height: 260px;
+}
+
+.mg_legend {
+	font-size: 10px;
+	margin-top: 6px;
+	margin-bottom: -6px;
+	margin-left: 80%;
+}
+
+.grid-cell-1 {
+	flex: 50%;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.grid-cell-2 {
+	flex: 100%;
+	padding: 20px;
+	box-sizing: border-box;
+}
