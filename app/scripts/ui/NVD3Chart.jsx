@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require('react'),
+var $model = require('./../model'),
 		nvd3 = require('nvd3');
 
 var transformData = function(model){
@@ -47,7 +47,8 @@ var Chart = React.createClass({
   },
 	renderChart: function(model) {
 		
-		var id = this.props.id;
+		var id = this.props.id,
+				chartFunc;
 		
 		if (this.chart === undefined){
 			

@@ -1,4 +1,4 @@
-window.$model = $model = (function () {
+var $model = (function () {
 
 	var dateToken = function (date) {
 			var str = (typeof date === 'string') ? date : date.toISOString();
@@ -237,3 +237,5 @@ window.$model = $model = (function () {
 
 	return api;
 })();
+
+module.exports = $model;

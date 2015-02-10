@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var React = require('react'),
+var $model = require('./../model'),
 		MG = require('metrics-graphics');
 
 var Chart = React.createClass({

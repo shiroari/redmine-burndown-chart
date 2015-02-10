@@ -13,26 +13,26 @@
 	<meta name="viewport" content="width=device-width">
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-	<link rel="stylesheet" href="styles/nv.d3.css">
-	<link rel="stylesheet" href="styles/metricsgraphics.css">
+	<!-- build:css styles/nv.d3.css -->
+	<link rel="stylesheet" href="styles/css/nv.d3.css">
+	<!-- endbuild -->
+
+	<!-- build:css styles/metricsgraphics.css -->
+	<link rel="stylesheet" href="styles/css/metricsgraphics.css">
+	<!-- endbuild -->
+
 	<link rel="stylesheet" href="styles/main.css">
 	<link rel="stylesheet" href="styles/tomato.css">
-	<!--link rel="stylesheet" href="styles/glass.css"-->
+	<link rel="stylesheet" href="styles/glass.css">
 
-	<!-- build:js scripts/vendor/modernizr.js -->
-	<script src="bower_components/modernizr/modernizr.js"></script>	
+	<!-- build:js scripts/es5-shim.min.js -->
+	<!--[if IE]><script src="bower_components/es5-shim/es5-shim.min.js"></script><![endif]-->
 	<!-- endbuild -->
-	
-	<!--
-	<script src='https://cdn.firebase.com/js/client/2.0.4/firebase.js'></script>
-	-->
-
 </head>
 
 <body>
 
 	<header>
-		<div id="timer"></div>
 	</header>
 
 	<div id="view">
@@ -40,14 +40,16 @@
 
 	<footer></footer>
 
-	<!-- build:js scripts/vendor.js -->
-	<!-- bower:js -->
+	<!-- build:js scripts/libs.js -->
+	<script src="bower_components/modernizr/modernizr.js"></script>
 	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<!-- endbower -->
 	<!-- endbuild -->
-	
+
+	<!-- build:js scripts/react.js -->
+	<script src="bower_components/react/react.js"></script>
+	<!-- endbuild -->
+
 	<script src="scripts/key.js"></script>
-	<script src="scripts/model.js"></script>
 	<script src="scripts/app.js"></script>
 </body>
 

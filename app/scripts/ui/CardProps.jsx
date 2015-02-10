@@ -1,6 +1,5 @@
 /** @jsx React.DOM */
-var React = require('react'),
-		Card = require('./Card');
+var Card = require('./Card.jsx');
 
 var CardProps = React.createClass({
   render: function() {
