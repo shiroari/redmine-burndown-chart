@@ -33,6 +33,15 @@ text {
 	opacity: 0.8 !important;
 }
 
+.tick line,
+.nv-interactiveGuideLine {
+	opacity: .3 !important;
+}
+
+.nv-interactiveGuideLine {
+	opacity: .3 !important;
+}
+
 /*
 body {
 	background-size: 300% 300%;

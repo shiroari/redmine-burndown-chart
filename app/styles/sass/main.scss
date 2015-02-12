@@ -6,7 +6,7 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/";
 @media screen and (min-width: 768px) {}
 
 html {
-	
+	height: 100%;
 }
 
 body {
@@ -15,8 +15,8 @@ body {
 
 #view {
 	
-	margin: 0 auto;
-	width: 60%;
+	margin: 0 auto;				
+	width: 75%;
 	
 	> div {
 		display: flex;
@@ -26,11 +26,11 @@ body {
 	}
 }
 
-.chartView {
-	min-height: 260px;
+.card-content {
+	min-height: 120px;
 }
 
-.chartView svg {
+.card-content svg {
 	height: 260px;
 }
 
@@ -42,13 +42,13 @@ body {
 }
 
 .grid-cell-1 {
-	flex: 50%;
+	flex: 25%;
 	padding: 20px;
 	box-sizing: border-box;
 }
 
 .grid-cell-2 {
-	flex: 100%;
+	flex: 75%;
 	padding: 20px;
 	box-sizing: border-box;
 }
