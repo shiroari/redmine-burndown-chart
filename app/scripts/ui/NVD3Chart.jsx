@@ -1,6 +1,8 @@
 /** @jsx React.DOM */
-var $model = require('./../model'),
+var $model = require('./../model/model'),
 		nvd3 = require('nvd3');
+		
+var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fru', 'Mon', 'Tue', 'Wed', 'Thu', 'Fru'];		
 
 var transformData = function(model){
 	return [
@@ -21,9 +23,17 @@ var transformData = function(model){
 		},
 		{
 			key: 'Velocity',
-			color: 'rgba(0,0,0,.3)',
+			color: 'rgba(0,0,0,.9)',
 			values: model.data[3]
-		}					
+		},
+		{
+			key: 'Goal',
+			color: 'rgba(240,0,0,.6)',
+			values: [
+				{index: model.startIndex, diff: model.goal},
+				{index: model.endIndex, diff: model.goal}
+			]
+		}	
 	];
 };
 
@@ -37,11 +47,10 @@ var Chart = React.createClass({
   },		
   render: function() {
     return (
-			<div className='chartView'>
+			<div>
 				<div id={this.props.id}>
 					<svg></svg>
 				</div>
-				<button onClick={this.handleClick}>Update</button>
 			</div>
     );
   },
@@ -68,8 +77,7 @@ var Chart = React.createClass({
 
 						chart.xAxis
 							.showMaxMin(false)
-							.tickFormat(function(d) { return (d + 1) > 5 ? (d + 1 - 5) : (d + 1); });
-						//	.tickFormat(function(d) { return d3.time.format('%x')(new Date(d)) });
+							.tickFormat(function(d) { return DAYS[d]; });
 						;
 
 						chart.yAxis

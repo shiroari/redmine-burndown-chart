@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-var $model = require('./../model'),
+var $model = require('./../model/model'),
 		MG = require('metrics-graphics');
 
 var Chart = React.createClass({
@@ -43,7 +43,7 @@ var Chart = React.createClass({
 	},
   render: function() {
     return (
-			<div className='chartView'>
+			<div>
 				<div id={this.props.id + '_legend'} className='mg_legend'></div>
 				<div id={this.props.id}></div>	
 			</div>
