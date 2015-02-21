@@ -20,6 +20,8 @@ var scatter = function (groups, issue) {
 		groups[date].review += val;
 	} else if (issue.status.name === 'Testing' || issue.status.name === 'Autotest') {
 		groups[date].test += val;
+	} else if (issue.status.name === 'In Progress' || issue.status.name === 'Reopened') {
+		groups[date].progress += val;
 	}
 
 };
@@ -27,11 +29,12 @@ var scatter = function (groups, issue) {
 var SmartLine = function (max) {
 
 	this.sum = 0;
-	this.points = [];
 	this.index = 0;
-	this.add = function (date, value) {
+	this.points = [];
 
-		if (value === null) {
+	this.add = function (date, baseValue, totalValue) {
+
+		if (baseValue === null) {
 			this.points.push({
 				index: this.index++,
 				date: date,
@@ -42,11 +45,11 @@ var SmartLine = function (max) {
 			return;
 		}
 
-		this.sum += value;
+		this.sum += totalValue || baseValue;
 		this.points.push({
 			index: this.index++,
 			date: date,
-			val: value,
+			val: baseValue,
 			sum: this.sum,
 			diff: (max - this.sum)
 		});
@@ -89,7 +92,8 @@ fn.transform = function (transport, opts) {
 				daysMap[$utils.dateToString(cur)] = {
 					test: 0,
 					review: 0,
-					closed: 0
+					closed: 0,
+					progress: 0
 				};
 			}
 		}
@@ -114,12 +118,23 @@ fn.transform = function (transport, opts) {
 
 	var closed = new SmartLine(target),
 		review = new SmartLine(target),
-		test = new SmartLine(target);
+		test = new SmartLine(target),
+		progress = new SmartLine(target);
 
 	points.forEach(function (d) {
-		closed.add(d.date, (d.value === null) ? null : d.value.closed);
-		review.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.review));
-		test.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.test));
+		
+		if (d.value === null){
+			closed.add(d.date, null);
+			review.add(d.date, null);
+			test.add(d.date, null);
+			progress.add(d.date, null);			
+		}
+		
+		closed.add(d.date, d.value.closed);
+		review.add(d.date, d.value.review, (d.value.closed + d.value.review));
+		test.add(d.date, d.value.test, (d.value.closed + d.value.test));
+		progress.add(d.date, d.value.progress, (d.value.closed + d.value.progress));
+		
 	});
 
 	var targetChart = $math.approx(closed.points);
@@ -127,6 +142,7 @@ fn.transform = function (transport, opts) {
 	removeEmpty(closed.points);
 	removeEmpty(review.points);
 	removeEmpty(test.points);
+	removeEmpty(progress.points);
 
 	return {
 		minY: 0,
@@ -136,7 +152,7 @@ fn.transform = function (transport, opts) {
 		start: start,
 		end: end,
 		goal: goal,
-		data: [closed.points, review.points, test.points, targetChart]
+		data: [closed.points, review.points, test.points, progress.points, targetChart]
 	};
 };
 

@@ -11,8 +11,8 @@ var listeners = [],
 		start: new Date('02-09-2015'),
 		end: new Date('02-21-2015'),
 		now: new Date(),
-		target: 6*70,
-		goal: 70
+		target: 5*70,
+		goal: null
 	},
 
 	DUMMY_URL = '/scripts/json/data.json',
