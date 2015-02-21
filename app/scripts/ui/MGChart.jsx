@@ -1,12 +1,15 @@
 /** @jsx React.DOM */
-var $model = require('./../model/model'),
+var React = require("react"),
+		$model = require('./../model/model'),
 		MG = require('metrics-graphics');
 
 var Chart = React.createClass({
+
 	componentDidMount: function() {
 		$model.onUpdate(this.renderChart);
 		$model.start();
   },
+	
 	renderChart: function(model) {
 		
 		$('#' + this.props.id).empty();
@@ -41,6 +44,7 @@ var Chart = React.createClass({
 			MG.data_graphic(props);
 					
 	},
+	
   render: function() {
     return (
 			<div>

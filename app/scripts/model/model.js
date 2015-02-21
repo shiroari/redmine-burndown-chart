@@ -1,7 +1,8 @@
-/* globals $: true, require: true, console: true, module: true */
+/*globals $, require, console, module*/
 'use strict';
 
-var $issues = require('./issues');
+var $issues = require('./issues'),
+		$user = require('./user');
 
 var listeners = [],
 	cachedModel = null,
@@ -18,16 +19,16 @@ var listeners = [],
 	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/npo-pms-15/issues.json?query_id=289&limit=300',
 	QUERIES_URL = 'https://nauphone.naumen.ru/redmine/queries.json?limit=300',
 
-	req = function (url, onsuccess, onfailed) {
+	req = function (url, onsuccess, onfailed) {		
 		$.ajax({
-			url: url,
+			url: url + '&key=' + $user.apiKey,
 			type: 'GET',
 			dataType: 'json',
 			success: onsuccess,
 			error: onfailed,
 			beforeSend: function setHeader(xhr) {
-				//xhr.setRequestHeader('Authorization', 'Basic ' + window.authKey);
 				xhr.setRequestHeader('Accept', 'application/json');
+				//xhr.setRequestHeader('X-Redmine-API-Key', $user.apiKey);
 			}
 		});
 	},
@@ -40,7 +41,7 @@ var listeners = [],
 			callback(cachedModel);
 		}
 		activeRequest++;
-		req(DUMMY_URL, function (data) {
+		req(ISSUES_URL, function (data) {
 			console.log('request success');
 			activeRequest--;
 			cachedModel = $issues.transform(data, opts);
@@ -53,8 +54,8 @@ var listeners = [],
 
 	fireUpdate = function (model) {
 		console.log('fire update event');
-		listeners.forEach(function (l) {
-			l(model);
+		listeners.forEach(function (listener) {
+			listener(model);
 		});
 	};
 

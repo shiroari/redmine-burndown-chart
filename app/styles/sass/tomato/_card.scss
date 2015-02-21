@@ -16,7 +16,7 @@
 }
 
 .card-actions {
-	@extend .list;
+	@extend .h-list;
 	margin-top: 12px;
 	margin-bottom: 4px;
 	li {

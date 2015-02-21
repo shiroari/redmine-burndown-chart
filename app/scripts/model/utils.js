@@ -1,3 +1,6 @@
+/*global module*/
+'use strict';
+
 var fn = {};
 
 fn.dateToString = function (date) {

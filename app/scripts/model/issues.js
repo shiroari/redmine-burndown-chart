@@ -1,4 +1,4 @@
-/* globals require: true, module: true */
+/*globals require, module*/
 'use strict';
 
 var $utils = require('./utils'),
@@ -18,11 +18,11 @@ var scatter = function (groups, issue) {
 		groups[date].closed += val;
 	} else if (issue.status.name === 'Review') {
 		groups[date].review += val;
-	} else if (issue.status.name === 'Test' || issue.status.name === 'Autotest') {
+	} else if (issue.status.name === 'Testing' || issue.status.name === 'Autotest') {
 		groups[date].test += val;
 	}
 
-}
+};
 
 var SmartLine = function (max) {
 
@@ -69,74 +69,75 @@ var fn = {};
 
 fn.transform = function (transport, opts) {
 
-		var start = $utils.truncDate(opts.start),
-			end = $utils.truncDate(opts.end),
-			today = $utils.truncDate(opts.now),
-			target = opts.target,
-			goal = opts.goal,
-			data = transport.issues;
+	var cur, day,
+		start = $utils.truncDate(opts.start),
+		end = $utils.truncDate(opts.end),
+		today = $utils.truncDate(opts.now),
+		target = opts.target,
+		goal = opts.goal,
+		data = transport.issues,
+		points = [],
+		daysMap = {};
 
-		var cur = start;
-
-		var points = [],
-			daysMap = {};
-
-		while (cur <= end) {
-			if (cur.getDay() !== 0 && cur.getDay() !== 6) {
-				if (cur > today) {
-					daysMap[$utils.dateToString(cur)] = null;
-				} else {
-					daysMap[$utils.dateToString(cur)] = {
-						test: 0,
-						review: 0,
-						closed: 0
-					};
-				}
+	cur = start;
+	
+	while (cur <= end) {
+		if (cur.getDay() !== 0 && cur.getDay() !== 6) {
+			if (cur > today) {
+				daysMap[$utils.dateToString(cur)] = null;
+			} else {
+				daysMap[$utils.dateToString(cur)] = {
+					test: 0,
+					review: 0,
+					closed: 0
+				};
 			}
-			cur = $utils.nextDay(cur);
 		}
+		cur = $utils.nextDay(cur);
+	}
 
-		data.forEach(scatter.bind(this, daysMap));
+	data.forEach(scatter.bind(this, daysMap));
 
-			for (var day in daysMap) {
-				points.push({
-					date: new Date(day),
-					value: daysMap[day]
-				});
-			}
+	for (day in daysMap) {
+		points.push({
+			date: new Date(day),
+			value: daysMap[day]
+		});
+	}
 
-			points.sort(function (l, r) {
-				if (l.date === r.date) {
-					return 0;
-				}
-				return (l.date > r.date) ? 1 : -1;
-			});
+	points.sort(function (l, r) {
+		if (l.date === r.date) {
+			return 0;
+		}
+		return (l.date > r.date) ? 1 : -1;
+	});
 
-			var closed = new SmartLine(target),
-				review = new SmartLine(target),
-				test = new SmartLine(target);
+	var closed = new SmartLine(target),
+		review = new SmartLine(target),
+		test = new SmartLine(target);
 
-			points.forEach(function (d) {
-				closed.add(d.date, (d.value === null) ? null : d.value.closed);
-				review.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.review));
-				test.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.test));
-			});
+	points.forEach(function (d) {
+		closed.add(d.date, (d.value === null) ? null : d.value.closed);
+		review.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.review));
+		test.add(d.date, (d.value === null) ? null : (d.value.closed + d.value.test));
+	});
 
-			var targetChart = $math.approx(closed.points);
+	var targetChart = $math.approx(closed.points);
 
-			removeEmpty(closed.points); removeEmpty(review.points); removeEmpty(test.points);
+	removeEmpty(closed.points);
+	removeEmpty(review.points);
+	removeEmpty(test.points);
 
-			return {
-				minY: 0,
-				maxY: target,
-				startIndex: 0,
-				endIndex: points.length - 1,
-				start: start,
-				end: end,
-				goal: goal,
-				data: [closed.points, review.points, test.points, targetChart]
-			};
-		};
+	return {
+		minY: 0,
+		maxY: target,
+		startIndex: 0,
+		endIndex: points.length - 1,
+		start: start,
+		end: end,
+		goal: goal,
+		data: [closed.points, review.points, test.points, targetChart]
+	};
+};
 
-
-		module.exports = fn;
+module.exports = fn;

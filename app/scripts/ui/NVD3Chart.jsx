@@ -1,8 +1,9 @@
 /** @jsx React.DOM */
-var $model = require('./../model/model'),
+var React = require("react"),
+		$model = require('./../model/model'),
 		nvd3 = require('nvd3');
 		
-var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fru', 'Mon', 'Tue', 'Wed', 'Thu', 'Fru'];		
+var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];		
 
 var transformData = function(model){
 	return [
@@ -38,13 +39,16 @@ var transformData = function(model){
 };
 
 var Chart = React.createClass({	
+
 	componentDidMount: function() {
 		$model.onUpdate(this.renderChart);
 		$model.start();
   },
+	
   handleClick: function(event) {
 		$model.update();
   },		
+	
   render: function() {
     return (
 			<div>
@@ -54,6 +58,7 @@ var Chart = React.createClass({
 			</div>
     );
   },
+	
 	renderChart: function(model) {
 		
 		var id = this.props.id,
