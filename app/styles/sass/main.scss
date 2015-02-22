@@ -13,6 +13,10 @@ body {
 	margin: 0;
 }
 
+header {
+	display: none;
+}
+
 #view {
 	margin: 0 auto;
 	width: 75%;
@@ -39,14 +43,20 @@ body {
 	margin-left: 80%;
 }
 
-.grid-cell-1 {
-	flex: 25%;
-	padding: 20px;
-	box-sizing: border-box;
+.grid > .grid-cell-1 {
+	flex: 1 1 25%;
 }
 
+.grid > .grid-cell-2 {
+	flex: 1 1 75%;
+}
+
+.grid-cell-1,
 .grid-cell-2 {
-	flex: 75%;
-	padding: 20px;
-	box-sizing: border-box;
+	box-sizing: border-box;	
+}
+
+.card {
+	margin: 20px 10px;
+	box-sizing: border-box;	
 }

@@ -7,12 +7,12 @@ var $issues = require('./issues'),
 var listeners = [],
 	cachedModel = null,
 	activeRequest = 0,
-	opts = {
-		start: new Date('02-09-2015'),
-		end: new Date('02-21-2015'),
-		now: new Date(),
-		target: 5*70,
-		goal: null
+	defaultSettings = {
+		from: '2015-02-09',
+		to: '2015-02-21',
+		numMembers: 6,
+		hoursPerMember: 70,
+		goal: 0
 	},
 
 	DUMMY_URL = '/scripts/json/data.json',
@@ -32,8 +32,18 @@ var listeners = [],
 			}
 		});
 	},
+		
+	transform = function(settings, response){		
+		return $issues.transform(response, {
+				start: new Date(settings.from),
+				end: new Date(settings.to),
+				now: new Date(),
+				target: settings.numMembers * settings.hoursPerMember,
+				goal: settings.goal				
+			});
+	},
 
-	executeUpdate = function (callback) {
+	executeUpdate = function (callback, settings) {
 		if (activeRequest > 0) {
 			return;
 		}
@@ -41,10 +51,10 @@ var listeners = [],
 			callback(cachedModel);
 		}
 		activeRequest++;
-		req(ISSUES_URL, function (data) {
+		req(ISSUES_URL, function (response) {
 			console.log('request success');
 			activeRequest--;
-			cachedModel = $issues.transform(data, opts);
+			cachedModel = transform(settings, response);
 			callback(cachedModel);
 		}, function () {
 			console.log('request failed');
@@ -68,12 +78,16 @@ api.onUpdate = function (listener) {
 };
 
 api.start = function () {
-	executeUpdate(fireUpdate);
+	executeUpdate(fireUpdate, defaultSettings);
 };
 
-api.update = function () {
+api.update = function (settings) {
 	cachedModel = null;
-	executeUpdate(fireUpdate);
+	executeUpdate(fireUpdate, settings);
+};
+
+api.loadSettings = function () {
+	return defaultSettings;
 };
 
 module.exports = api;

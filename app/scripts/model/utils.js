@@ -8,6 +8,10 @@ fn.dateToString = function (date) {
 	return str.substr(0, str.indexOf('T'));
 };
 
+fn.localDateToString = function (date) {
+	return fn.dateToString(fn.truncDate(date));
+};
+
 fn.addDays = function (date, days) {
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days,
 		date.getHours(), date.getMinutes(), 0, 0);

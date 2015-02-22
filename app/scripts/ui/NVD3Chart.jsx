@@ -26,12 +26,11 @@ var transformBurndownData = function(model){
 		},
 		{
 			key: 'Goal',
-			color: 'tomato',
+			color: '#ff6347',
 			values: [
 				{index: model.startIndex, diff: model.goal},
 				{index: model.endIndex, diff: model.goal}
-			],
-			disabled: true
+			]
 		},
 		{
 			key: 'Velocity',
@@ -104,7 +103,8 @@ var Chart = React.createClass({
 			
 			chartFunc = function(model){
 
-				var self = this;
+				var self = this,
+						data = transformBurndownData(model);
 				
 				nv.addGraph(function(){
 					
@@ -118,6 +118,7 @@ var Chart = React.createClass({
 							.showMaxMin(false)
 							.tickValues([0,1,2,3,4,5,6,7,8,9,10,11])
 							.tickFormat(function(d) { return DAYS[d]; });
+							//.tickFormat(function(d) { return DAYS[data[0].values[d].date.getDay()]; });
 						;
 
 						chart.yAxis
@@ -128,7 +129,7 @@ var Chart = React.createClass({
 						chart.forceX([model.startIndex, model.endIndex]);
 
 						d3.select('#' + id + ' svg')
-							.datum(transformBurndownData(model))
+							.datum(data)
 							.transition()
 							.duration(500)
 							.call(chart);
