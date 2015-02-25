@@ -3,7 +3,7 @@ var React = require("react"),
 		$model = require('./../model/model'),
 		nvd3 = require('nvd3');
 		
-var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'];		
+var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];		
 
 var transformBurndownData = function(model){
 	return [
@@ -75,18 +75,36 @@ var Chart = React.createClass({
   render: function() {
     return (
 			<div>
-				<div id={this.props.id}>
+				<div id={this.props.id}  className='nvd3-chart'>
+					<div className='msg'></div>
 					<svg></svg>
 				</div>
 			</div>
     );
   },
 	
-	renderChart: function(model) {
+	renderChart: function(model, error) {
 	
-		if (this.props.type === 'burndown'){
+		var id = this.props.id,
+				type = this.props.type;	
+	
+		if (!model){
+			if (!error) {
+				$('#'+ id + ' .msg').text('Loading...');
+			} else {
+				$('#'+ id + ' .msg').text(error);
+			}
+			$('#'+ id + ' .msg').show();
+			$('#'+ id + ' svg').hide();
+			return;
+		}
+
+		$('#'+ id + ' .msg').hide();
+		$('#'+ id + ' svg').show();
+
+		if (type === 'burndown'){
 			this.renderBurndownChart(model);
-		} else if (this.props.type === 'stacked'){
+		} else if (type === 'stacked'){
 			this.renderStackedChart(model);
 		}
 	
@@ -116,16 +134,16 @@ var Chart = React.createClass({
 
 						chart.xAxis							
 							.showMaxMin(false)
-							.tickValues([0,1,2,3,4,5,6,7,8,9,10,11])
-							.tickFormat(function(d) { return DAYS[d]; });
-							//.tickFormat(function(d) { return DAYS[data[0].values[d].date.getDay()]; });
-						;
+							.tickValues(d3.range(model.startIndex, model.endIndex + 1))
+							.tickFormat(function(d) {
+								return DAYS[(model.start.getDay() - 1 + d) % 5]; 
+							});
 
 						chart.yAxis
 							.axisLabel('Hours (h)')
-							.tickFormat(d3.format('.0'));
+							.tickFormat(d3.format('.0f'));
 
-						chart.forceY([model.minY, model.maxY]);
+						chart.forceY([model.minY]);
 						chart.forceX([model.startIndex, model.endIndex]);
 
 						d3.select('#' + id + ' svg')
@@ -150,6 +168,12 @@ var Chart = React.createClass({
 				d3.select('#' + id + ' svg')
 					.datum(transformBurndownData(model));
 				this.chart.dispatch.changeState(this.chart.state());
+				this.chart.xAxis							
+						.tickValues(d3.range(model.startIndex, model.endIndex + 1))
+						.tickFormat(function(d) {
+							return DAYS[(model.start.getDay() - 1 + d) % 5]; 
+						});				
+				this.chart.forceX([model.startIndex, model.endIndex]);
 				this.chart.update();
 				
 			}
@@ -167,7 +191,7 @@ var Chart = React.createClass({
 		
 		var id = this.props.id,
 				chartFunc;
-		
+				
 		if (this.chart === undefined){
 			
 			this.chart = null;
@@ -187,14 +211,15 @@ var Chart = React.createClass({
 						chart.xAxis							
 							.showMaxMin(false)
 							.tickValues([0,1,2,3,4,5,6,7,8,9,10,11])
-							.tickFormat(function(d) { return DAYS[d]; });
-						;
+							.tickFormat(function(d) {
+								return DAYS[(model.start.getDay() - 1 + d) % 5]; 
+							});
 
 						chart.yAxis
 							.axisLabel('Hours (h)')
 							.tickFormat(d3.format('.0'));
 
-						chart.forceY([model.minY, model.maxY]);
+						chart.forceY([model.minY]);
 						chart.forceX([model.startIndex, model.endIndex]);
 
 						d3.select('#' + id + ' svg')
@@ -219,6 +244,12 @@ var Chart = React.createClass({
 				d3.select('#' + id + ' svg')
 					.datum(transformStackedData(model));
 				this.chart.dispatch.changeState(this.chart.state());
+				this.chart.xAxis							
+						.tickValues(d3.range(model.startIndex, model.endIndex + 1))
+						.tickFormat(function(d) {
+							return DAYS[(model.start.getDay() - 1 + d) % 5]; 
+						});
+				this.chart.forceX([model.startIndex, model.endIndex]);
 				this.chart.update();
 				
 			}

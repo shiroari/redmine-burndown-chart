@@ -11,6 +11,7 @@ html {
 
 body {
 	margin: 0;
+	color: #444;	
 }
 
 header {
@@ -32,11 +33,18 @@ header {
 	min-height: 120px;
 }
 
-.card-content svg {
+.nvd3-chart {
 	height: 260px;
 }
 
-.mg_legend {
+.nvd3-chart .msg {
+	text-align: center;
+	line-height: 260px;
+	margin: auto 0;
+	font-size: 14px;
+}
+
+mg-chart .mg_legend {
 	font-size: 10px;
 	margin-top: 6px;
 	margin-bottom: -6px;
@@ -53,10 +61,10 @@ header {
 
 .grid-cell-1,
 .grid-cell-2 {
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }
 
 .card {
 	margin: 20px 10px;
-	box-sizing: border-box;	
+	box-sizing: border-box;
 }

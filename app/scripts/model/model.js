@@ -8,11 +8,11 @@ var listeners = [],
 	cachedModel = null,
 	activeRequest = 0,
 	defaultSettings = {
-		from: '2015-02-09',
-		to: '2015-02-21',
+		from: '2015-02-24',
+		to: '2015-03-08',
 		numMembers: 6,
 		hoursPerMember: 70,
-		goal: 0
+		goal: 70
 	},
 
 	DUMMY_URL = '/scripts/json/data.json',
@@ -54,18 +54,24 @@ var listeners = [],
 		req(ISSUES_URL, function (response) {
 			console.log('request success');
 			activeRequest--;
-			cachedModel = transform(settings, response);
-			callback(cachedModel);
-		}, function () {
+			try {
+				cachedModel = transform(settings, response);
+				callback(cachedModel);
+			} catch (err){
+				console.error(err);
+				callback(null, 'Invalid response');
+			}
+		}, function (xhr) {
 			console.log('request failed');
 			activeRequest--;
+			callback(null, xhr.statusText);
 		});
 	},
 
-	fireUpdate = function (model) {
+	fireUpdate = function (model, error) {
 		console.log('fire update event');
 		listeners.forEach(function (listener) {
-			listener(model);
+			listener(model, error);
 		});
 	};
 
@@ -78,11 +84,12 @@ api.onUpdate = function (listener) {
 };
 
 api.start = function () {
-	executeUpdate(fireUpdate, defaultSettings);
+	api.update(api.loadSettings());
 };
 
 api.update = function (settings) {
 	cachedModel = null;
+	fireUpdate();
 	executeUpdate(fireUpdate, settings);
 };
 
