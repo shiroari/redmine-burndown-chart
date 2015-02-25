@@ -127,7 +127,8 @@ fn.transform = function (transport, opts) {
 			closed.add(d.date, null);
 			review.add(d.date, null);
 			test.add(d.date, null);
-			progress.add(d.date, null);			
+			progress.add(d.date, null);
+			return;		
 		}
 		
 		closed.add(d.date, d.value.closed);
