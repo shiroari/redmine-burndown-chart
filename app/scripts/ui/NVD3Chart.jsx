@@ -1,6 +1,5 @@
-/** @jsx React.DOM */
 var React = require("react"),
-		$model = require('./../model/model'),
+		$model = require('../ctrl'),
 		nvd3 = require('nvd3');
 		
 var DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];		

@@ -1,7 +1,5 @@
-/** @jsx React.DOM */
-
 var React = require("react"),
-		$model = require('./../model/model');
+		$model = require('../ctrl');
 
 var ControlPanel = React.createClass({
   getInitialState: function() {

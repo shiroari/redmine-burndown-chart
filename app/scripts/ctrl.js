@@ -1,18 +1,17 @@
-/*globals $, require, console, module*/
 'use strict';
 
-var $issues = require('./issues'),
+var $issues = require('./model/issues'),
 		$user = require('./user');
 
 var listeners = [],
 	cachedModel = null,
 	activeRequest = 0,
 	defaultSettings = {
-		from: '2015-02-24',
-		to: '2015-03-08',
-		numMembers: 6,
+		from: '2015-03-23',
+		to: '2015-04-06',
+		numMembers: 5,
 		hoursPerMember: 70,
-		goal: 70
+		goal: 0
 	},
 
 	DUMMY_URL = '/scripts/json/data.json',

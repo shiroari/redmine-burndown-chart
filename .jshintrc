@@ -1,7 +1,13 @@
 {
-	"strict": false,
-	"plusplus": false,
-	"eqeqeq": false,
+	// Environments
 	"browser": true,
-	"maxerr": 100
+	"browserify": true,
+	"jasmine": true,
+	"jquery": true,
+
+	// Custom Globals
+	"globals": {
+		"require": true,
+		"module": true
+	}
 }

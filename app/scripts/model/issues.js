@@ -1,8 +1,7 @@
-/*globals require, module*/
 'use strict';
 
-var $utils = require('./utils'),
-	$math = require('./math');
+var $utils = require('../utils/common'),
+	$math = require('../utils/math');
 
 var scatter = function (groups, issue) {
 
@@ -10,7 +9,9 @@ var scatter = function (groups, issue) {
 		val = issue.estimated_hours || 0.0,
 		skipLimit = 24;
 
-	if (val > skipLimit || groups[date] === undefined || groups[date] === null) {
+	if (val > skipLimit || groups[date] === undefined
+			|| groups[date] === null 
+			|| issue.tags.filter(function(tag){return tag.id === 'container' || tag.id === 'roadmap-root';}).length > 0) {
 		return;
 	}
 

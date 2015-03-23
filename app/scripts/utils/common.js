@@ -1,4 +1,3 @@
-/*global module*/
 'use strict';
 
 var fn = {};

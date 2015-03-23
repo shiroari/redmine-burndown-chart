@@ -1,10 +1,8 @@
-/** @jsx React.DOM */
-
 var React = require("react"),
 		Card = require("./Card.jsx"),
 		ControlPanel = require("./ControlPanel.jsx"),
-		NVChart = require("./NVD3Chart.jsx"),
-		MGChart = require("./MGChart.jsx");		
+		NVChart = require("./NVD3Chart.jsx");
+		//MGChart = require("./MGChart.jsx");		
 
 var View = {};
 
