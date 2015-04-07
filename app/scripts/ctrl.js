@@ -1,21 +1,21 @@
 'use strict';
 
 var $issues = require('./model/issues'),
+    $queries = require('./model/queries'),
 		$user = require('./user');
 
 var listeners = [],
 	cachedModel = null,
 	activeRequest = 0,
 	defaultSettings = {
-		from: '2015-03-23',
-		to: '2015-04-06',
+		from: '2015-04-06',
+		to: '2015-04-20',
 		numMembers: 5,
 		hoursPerMember: 70,
 		goal: 0
 	},
 
-	DUMMY_URL = '/scripts/json/data.json',
-	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/npo-pms-15/issues.json?query_id=289&limit=300',
+	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/npo-pms-15/issues.json?limit=300&query_id=',
 	QUERIES_URL = 'https://nauphone.naumen.ru/redmine/queries.json?limit=300',
 
 	req = function (url, onsuccess, onfailed) {		
@@ -50,7 +50,7 @@ var listeners = [],
 			callback(cachedModel);
 		}
 		activeRequest++;
-		req(ISSUES_URL, function (response) {
+		req(ISSUES_URL + settings.query, function (response) {
 			console.log('request success');
 			activeRequest--;
 			try {
@@ -92,8 +92,19 @@ api.update = function (settings) {
 	executeUpdate(fireUpdate, settings);
 };
 
+api.updateQueries = function (callback) {
+	req(QUERIES_URL, function(response){
+    callback({queries: $queries.transform(response)});
+  });
+};
+
 api.loadSettings = function () {
-	return defaultSettings;
+  var settings = localStorage.getItem('settings');
+	return settings ? JSON.parse(settings) : defaultSettings;
+};
+
+api.saveSettings = function (settings) {
+	return localStorage.setItem('settings', JSON.stringify(settings));
 };
 
 module.exports = api;

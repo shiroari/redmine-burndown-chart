@@ -3,47 +3,64 @@ var React = require("react"),
 
 var ControlPanel = React.createClass({
   getInitialState: function() {
-		return $model.loadSettings();
+		return {
+      queries: [],
+      settings: $model.loadSettings()
+    };
   },	
-  handleClick: function(event) {
-		$model.update(this.state);
-  },	
-  handleChange: function(event) {
-		this.state[event.target.name] = event.target.value;
+	componentDidMount: function() {
+		$model.updateQueries(this.onUpdateQueries.bind(this));
+  },  
+  onUpdateQueries: function(event) {
+    this.state.queries = event.queries;
+		this.setState(this.state);
+  },
+  onUpdate: function(event) {
+		$model.update(this.state.settings);
+  },
+  onChange: function(event) {
+		this.state.settings[event.target.name] = event.target.value;
+    $model.saveSettings(this.state.settings);
     this.setState(this.state);
   },	
   render: function() {
+    var queries = this.state.queries,
+      state = this.state.settings;
     return (
 			<div>
 				<ul className='formfields'>
 					<li className="formfield">
-						<label htmlFor='f4'>Query</label>
-						<select name='f4'>
-							<option>...</option>
+						<label htmlFor='query'>Query</label>
+						<select name='query' onChange={this.onChange}>{
+              queries.map(function(opt){
+                return (
+                  <option value={opt.id} selected={state.query == opt.id}>{opt.name}</option>
+                );
+              })}
 						</select>
 					</li>
 					<li className="formfield">
 						<label htmlFor='from'>From</label>
-						<input name='from' type='date' value={this.state.from} onChange={this.handleChange}/>
+						<input name='from' type='date' value={state.from} onChange={this.onChange}/>
 					</li>
 					<li className="formfield">
 						<label htmlFor='to'>To</label>
-						<input name='to' type='date' value={this.state.to} onChange={this.handleChange}/>
+						<input name='to' type='date' value={state.to} onChange={this.onChange}/>
 					</li>
 					<li className="formfield">
 						<label htmlFor='numMembers'>Team members</label>
-						<input name='numMembers' type='number' value={this.state.numMembers} onChange={this.handleChange}/>
+						<input name='numMembers' type='number' value={state.numMembers} onChange={this.onChange}/>
 					</li>
 					<li className="formfield">
 						<label htmlFor='hoursPerMember'>Hours per member</label>
-						<input name='hoursPerMember' type='number' value={this.state.hoursPerMember} onChange={this.handleChange}/>
+						<input name='hoursPerMember' type='number' value={state.hoursPerMember} onChange={this.onChange}/>
 					</li>
 					<li className="formfield">
 						<label htmlFor='goal'>Goal</label>
-						<input name='goal' type='number' value={this.state.goal} onChange={this.handleChange}/>
+						<input name='goal' type='number' value={state.goal} onChange={this.onChange}/>
 					</li>					
 					<li className="formfield">
-						<button onClick={this.handleClick}>Update</button>
+						<button onClick={this.onUpdate}>Update</button>
 					</li>
 				</ul>
 			</div>
