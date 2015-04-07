@@ -2,10 +2,12 @@
 
 var $issues = require('./model/issues'),
     $queries = require('./model/queries'),
+    $projects = require('./model/projects'),
 		$user = require('./user');
 
 var listeners = [],
 	cachedModel = null,
+  cachedProjects = {},
 	activeRequest = 0,
 	defaultSettings = {
 		from: '2015-04-06',
@@ -15,8 +17,9 @@ var listeners = [],
 		goal: 0
 	},
 
-	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/npo-pms-15/issues.json?limit=300&query_id=',
+	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/{project}/issues.json?limit=300&query_id={query}',
 	QUERIES_URL = 'https://nauphone.naumen.ru/redmine/queries.json?limit=300',
+  PROJECTS_URL = 'https://nauphone.naumen.ru/redmine/projects.json?limit=300',  
 
 	req = function (url, onsuccess, onfailed) {		
 		$.ajax({
@@ -43,14 +46,30 @@ var listeners = [],
 	},
 
 	executeUpdate = function (callback, settings) {
-		if (activeRequest > 0) {
+		
+    var uri, project;
+    
+    if (activeRequest > 0) {
 			return;
 		}
-		if (cachedModel !== null) {
+		
+    if (cachedModel !== null) {
 			callback(cachedModel);
+      return;
 		}
-		activeRequest++;
-		req(ISSUES_URL + settings.query, function (response) {
+		
+    project = cachedProjects[settings.project];
+    if (!project || !settings.query){
+      callback(null, 'No Data');
+      return;
+    }
+    
+    uri = ISSUES_URL.replace('{project}', project.identifier)
+              .replace('{query}', settings.query);
+    
+    activeRequest++;
+    
+		req(uri, function (response) {
 			console.log('request success');
 			activeRequest--;
 			try {
@@ -92,9 +111,20 @@ api.update = function (settings) {
 	executeUpdate(fireUpdate, settings);
 };
 
-api.updateQueries = function (callback) {
+api.updateQueries = function (callback, opts) {
 	req(QUERIES_URL, function(response){
-    callback({queries: $queries.transform(response)});
+    callback({queries: $queries.transform(response, opts)});
+  });
+};
+
+api.updateProjects = function (callback) {
+	req(PROJECTS_URL, function(response){
+    var projects = $projects.transform(response);
+    cachedProjects = {};
+    projects.forEach(function(p){
+      cachedProjects[p.id] = p;
+    });
+    callback({projects: projects});
   });
 };
 
