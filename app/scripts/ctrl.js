@@ -2,14 +2,16 @@
 
 var $issues = require('./model/issues'),
     $queries = require('./model/queries'),
-    $projects = require('./model/projects'),
-		$user = require('./user');
+    $projects = require('./model/projects');
 
 var listeners = [],
 	cachedModel = null,
   cachedProjects = {},
 	activeRequest = 0,
+  settings = null,
 	defaultSettings = {
+    redmineURI: 'https://nauphone.naumen.ru/redmine',
+    apiKey: 'd0c433ec56e26be7aaa0b18f8a8cd857cb1fce90',
 		from: '2015-04-06',
 		to: '2015-04-20',
 		numMembers: 5,
@@ -17,25 +19,25 @@ var listeners = [],
 		goal: 0
 	},
 
-	ISSUES_URL = 'https://nauphone.naumen.ru/redmine/projects/{project}/issues.json?limit=300&query_id={query}',
-	QUERIES_URL = 'https://nauphone.naumen.ru/redmine/queries.json?limit=300',
-  PROJECTS_URL = 'https://nauphone.naumen.ru/redmine/projects.json?limit=300',  
+	PROJECTS_URI = '/projects.json?limit=300', 
+  QUERIES_URI = '/queries.json?limit=300',    
+  ISSUES_URI = '/projects/{project}/issues.json?limit=300&query_id={query}',
 
 	req = function (url, onsuccess, onfailed) {		
 		$.ajax({
-			url: url + '&key=' + $user.apiKey,
+			url: url + '&key=' + settings.apiKey,
 			type: 'GET',
 			dataType: 'json',
 			success: onsuccess,
 			error: onfailed,
 			beforeSend: function setHeader(xhr) {
 				xhr.setRequestHeader('Accept', 'application/json');
-				//xhr.setRequestHeader('X-Redmine-API-Key', $user.apiKey);
+				//xhr.setRequestHeader('X-Redmine-API-Key', apiKey);
 			}
 		});
 	},
 		
-	transform = function(settings, response){		
+	transform = function(response){		
 		return $issues.transform(response, {
 				start: new Date(settings.from),
 				end: new Date(settings.to),
@@ -45,7 +47,7 @@ var listeners = [],
 			});
 	},
 
-	executeUpdate = function (callback, settings) {
+	executeUpdate = function (callback) {
 		
     var uri, project;
     
@@ -64,7 +66,7 @@ var listeners = [],
       return;
     }
     
-    uri = ISSUES_URL.replace('{project}', project.identifier)
+    uri = settings.redmineURI + ISSUES_URI.replace('{project}', project.identifier)
               .replace('{query}', settings.query);
     
     activeRequest++;
@@ -73,7 +75,7 @@ var listeners = [],
 			console.log('request success');
 			activeRequest--;
 			try {
-				cachedModel = transform(settings, response);
+				cachedModel = transform(response);
 				callback(cachedModel);
 			} catch (err){
 				console.error(err);
@@ -105,20 +107,20 @@ api.start = function () {
 	api.update(api.loadSettings());
 };
 
-api.update = function (settings) {
+api.update = function () {
 	cachedModel = null;
 	fireUpdate();
-	executeUpdate(fireUpdate, settings);
+	executeUpdate(fireUpdate);
 };
 
 api.updateQueries = function (callback, opts) {
-	req(QUERIES_URL, function(response){
+	req(settings.redmineURI + QUERIES_URI, function(response){
     callback({queries: $queries.transform(response, opts)});
   });
 };
 
 api.updateProjects = function (callback) {
-	req(PROJECTS_URL, function(response){
+	req(settings.redmineURI + PROJECTS_URI, function(response){
     var projects = $projects.transform(response);
     cachedProjects = {};
     projects.forEach(function(p){
@@ -129,12 +131,19 @@ api.updateProjects = function (callback) {
 };
 
 api.loadSettings = function () {
-  var settings = localStorage.getItem('settings');
-	return settings ? JSON.parse(settings) : defaultSettings;
+  var param, userSettings = localStorage.getItem('settings');
+  settings = userSettings ? JSON.parse(userSettings) : defaultSettings;
+  for (param in defaultSettings){
+    if (settings[param] === undefined){
+      settings[param] = defaultSettings[param];
+    }
+  }
+	return settings;
 };
 
-api.saveSettings = function (settings) {
-	return localStorage.setItem('settings', JSON.stringify(settings));
+api.saveSettings = function (userSettings) {
+  settings = userSettings;
+	return localStorage.setItem('settings', JSON.stringify(userSettings));
 };
 
 module.exports = api;

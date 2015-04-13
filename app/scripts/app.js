@@ -1,5 +1,5 @@
 
 var view = require("./ui/View.jsx");
 
-view.render($("#view")[0]);
+view.render(document.getElementById("view"));
 
