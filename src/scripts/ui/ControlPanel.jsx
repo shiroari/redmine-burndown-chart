@@ -10,100 +10,100 @@ var ControlPanel = React.createClass({
       settingsOpened: false,
       settings: $model.loadSettings()
     };
-  },	
-  
+  },
+
 	componentDidMount: function() {
-  
+
 		$model.updateProjects(this.onUpdateProjects.bind(this));
-    
+
     var self = this;
-    
-    this.props.bind.on = function(){      
+
+    this.props.bind.on = function(){
       self.state.settingsOpened = true;
-      self.setState(self.state);      
+      self.setState(self.state);
     };
-    
-  },  
-  
+
+  }, 
+
   onUpdateProjects: function(event) {
-  
+
     this.state.projects = event.projects;
-    
+
     if (this.state.projects.length === 0){
       this.state.settings.project = null;
       this.state.settings.query = null;
       this.setState(this.state);
       return;
     }
-    
+
     if (!this.state.settings.project){
-      this.state.settings.project = this.state.projects[0].id;      
+      this.state.settings.project = this.state.projects[0].id;
     }
-    
+
     $model.updateQueries(this.onUpdateQueries.bind(this), {project: this.state.settings.project});
   },
-  
+
   onUpdateQueries: function(event) {
-  
+
     this.state.queries = event.queries;
-    
+
     if (this.state.queries.length === 0){
       this.state.settings.query = null;
       this.setState(this.state);
       return;
-    }    
-    
+    }
+
     if (!this.state.settings.query){
-      this.state.settings.query = this.state.queries[0].id;      
-    }    
-    
+      this.state.settings.query = this.state.queries[0].id;
+    }
+
     $model.update(this.state.settings);
-    
+
 		this.setState(this.state);
   },
-  
+
   onSave: function(event) {
     this.state.settingsOpened = false;
-    this.setState(this.state);    
-  },  
-  
+		$model.updateProjects(this.onUpdateProjects.bind(this));
+  },
+
   onUpdate: function(event) {
 		$model.update(this.state.settings);
   },
-  
+
   onChange: function(event) {
     this._updateSettings(event.target.name, event.target.value);
     this.setState(this.state);
   },
-  
+
   onChangeProject: function(event) {
-		
+
     this._updateSettings(event.target.name, event.target.value);
-    
+
     this.state.queries = [];
     this.state.settings.query = null;
-    
+
     if (this.state.settings.project){
       $model.updateQueries(this.onUpdateQueries.bind(this), {project: this.state.settings.project});
       return;
     }
-    
+
     this.setState(this.state);
   },
-  
+
   onChangeQuery: function(event) {
-  
+
 		this._updateSettings(event.target.name, event.target.value);
-    
+
     $model.update(this.state.settings);
-    
-  },    
-  
+
+  },
+
   _updateSettings(name, value){
 		this.state.settings[name] = value;
     $model.saveSettings(this.state.settings);
-  },  
-  
+  },
+
   render: function() {
     var projects = this.state.projects,
       queries = this.state.queries,
@@ -115,11 +115,11 @@ var ControlPanel = React.createClass({
 					<li className="form-field">
 						<label htmlFor='redmineURI'>Redmine URI</label>
 						<input name='redmineURI' type='text' defaultValue={state.redmineURI} onChange={this.onChange}/>
-					</li>       
+					</li>
 					<li className="form-field">
 						<label htmlFor='apiKey'>Api Key</label>
 						<input name='apiKey' type='text' defaultValue={state.apiKey} onChange={this.onChange}/>
-					</li>           
+					</li>
 					<li className="form-footer">
             <button onClick={this.onSave}>Save</button>
 					</li>
@@ -135,7 +135,7 @@ var ControlPanel = React.createClass({
                 );
               })}
 						</select>
-					</li>					        
+					</li>
 					<li className="form-field">
 						<label htmlFor='query'>Query</label>
 						<select name='query' defaultValue={state.query} onChange={this.onChangeQuery}>{
@@ -165,7 +165,7 @@ var ControlPanel = React.createClass({
 					<li className="form-field">
 						<label htmlFor='goal'>Goal</label>
 						<input name='goal' type='number' value={state.goal} onChange={this.onChange}/>
-					</li>					
+					</li>
 					<li className="form-footer">
 						<button onClick={this.onUpdate}>Update</button>
 					</li>
