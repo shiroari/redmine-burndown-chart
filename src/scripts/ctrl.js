@@ -10,8 +10,8 @@ var listeners = [],
 	activeRequest = 0,
   settings = null,
 	defaultSettings = {
-    redmineURI: 'https://nauphone.naumen.ru/redmine',
-    apiKey: 'd0c433ec56e26be7aaa0b18f8a8cd857cb1fce90',
+    redmineURI: 'http://www.example.com/redmine',
+    apiKey: '',
 		from: '2015-04-06',
 		to: '2015-04-20',
 		numMembers: 5,
@@ -19,11 +19,11 @@ var listeners = [],
 		goal: 0
 	},
 
-	PROJECTS_URI = '/projects.json?limit=300', 
-  QUERIES_URI = '/queries.json?limit=300',    
+	PROJECTS_URI = '/projects.json?limit=300',
+  QUERIES_URI = '/queries.json?limit=300',
   ISSUES_URI = '/projects/{project}/issues.json?limit=300&query_id={query}',
 
-	req = function (url, onsuccess, onfailed) {		
+	req = function (url, onsuccess, onfailed) {
 		$.ajax({
 			url: url + '&key=' + settings.apiKey,
 			type: 'GET',
@@ -36,41 +36,41 @@ var listeners = [],
 			}
 		});
 	},
-		
-	transform = function(response){		
+
+	transform = function(response){
 		return $issues.transform(response, {
 				start: new Date(settings.from),
 				end: new Date(settings.to),
 				now: new Date(),
 				target: settings.numMembers * settings.hoursPerMember,
-				goal: settings.goal				
+				goal: settings.goal
 			});
 	},
 
 	executeUpdate = function (callback) {
-		
+
     var uri, project;
-    
+
     if (activeRequest > 0) {
 			return;
 		}
-		
+
     if (cachedModel !== null) {
 			callback(cachedModel);
       return;
 		}
-		
+
     project = cachedProjects[settings.project];
     if (!project || !settings.query){
       callback(null, 'No Data');
       return;
     }
-    
+
     uri = settings.redmineURI + ISSUES_URI.replace('{project}', project.identifier)
               .replace('{query}', settings.query);
-    
+
     activeRequest++;
-    
+
 		req(uri, function (response) {
 			console.log('request success');
 			activeRequest--;

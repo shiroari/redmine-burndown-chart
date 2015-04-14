@@ -1,9 +1,10 @@
 {
-	"name": "redmine-burndownchart",
+	"name": "redmine-burndown-chart",
 	"version": "0.0.1",
 	"dependencies": {},
 	"devDependencies": {
-		"del": "latest",
+		"vinyl-source-stream": "latest",
+    "del": "latest",
 		"gulp": "latest",
 		"gulp-load-plugins": "latest",
 		"gulp-bower": "latest",
@@ -11,20 +12,19 @@
 		"gulp-autoprefixer": "latest",
 		"gulp-minify-css": "latest",
 		"gulp-cache": "latest",
-		"gulp-jade": "latest",
 		"gulp-jest": "latest",
 		"gulp-size": "latest",
 		"gulp-useref": "latest",
 		"gulp-util": "latest",
 		"gulp-webserver": "latest",
 		"react": "latest",
+    "flux": "latest",
 		"watchify": "latest",
 		"browserify": "latest",
 		"browserify-shim": "latest",
-		"vinyl-source-stream": "latest",
 		"babelify": "latest",
-		"nvd3": "latest",
-		"babel-jest": "latest"
+		"babel-jest": "latest",
+		"nvd3": "latest"
 	},
 	"browserify": {
 		"transform": [
