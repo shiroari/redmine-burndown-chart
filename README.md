@@ -8,7 +8,7 @@ You can find online version [here](http://shiroari.github.io/redmine-burndown-ch
 
 ### Screenshots
 
-<img src="docs/images/screenshot.png" style="margin: 0 auto; width:80%">
+<img src="docs/images/screenshot.png">
 
 ### Settings
 
@@ -20,15 +20,15 @@ How to get API key:
 
 1\. Open your account page by link at page header.
 
-<img src="docs/images/apikey-guide.png" style="margin: 0 auto; width:80%">
+<img src="docs/images/apikey-guide.png" width="500px">
 
 2\. Click `Show` link to see your API key and copy it.
 
-<img src="docs/images/apikey.png" style="margin: 0 auto; width:80%">
+<img src="docs/images/apikey.png" width="500px">
 
 3\. Open the application and click `cog` icon in the `Presets` list. Enter a redmine location and your API key.
 
-<img src="docs/images/settings.png" style="margin: 0 auto; width:80%">
+<img src="docs/images/settings.png" width="500px">
 
 ### Restrictions
 
