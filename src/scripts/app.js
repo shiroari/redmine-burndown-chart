@@ -1,5 +1,52 @@
+'use strict';
 
-var view = require("./ui/View.jsx");
+var AppDispatcher = require('./AppDispatcher');
 
-view.render(document.getElementById("view"));
+const DefaultSettings = {
+  redmineURI: 'http://www.example.com/redmine',
+  apiKey: '',
+  from: '2015-04-06',
+  to: '2015-04-20',
+  numMembers: 5,
+  hoursPerMember: 70,
+  goal: 0
+};
 
+class App {
+
+  constructor() {
+
+    var userSettings = localStorage.getItem('settings');
+
+    try {
+      this._settings = JSON.parse(userSettings);
+    } catch (err){
+      this._settings = Object.assign({}, DefaultSettings);
+    }
+
+  }
+
+  _saveSettings(userSettings) {
+
+    localStorage.setItem('settings', JSON.stringify(userSettings));
+
+  }
+
+  get settings() {
+    return this._settings;
+  }
+
+  set settings(settings) {
+    this._saveSettings(settings);
+    this._settings = settings;
+  }
+
+  start(){
+
+    AppDispatcher.update();
+
+  }
+
+}
+
+module.exports = new App();

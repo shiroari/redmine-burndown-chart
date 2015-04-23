@@ -7,8 +7,7 @@ var gulp = require('gulp'),
   path = require('path'),
   browserify = require('browserify'),
   watchify = require('watchify'),
-
-  sourceFile = './src/scripts/app.js',
+  sourceFile = './src/scripts/main.js',
   destFolder = './dist/scripts',
   destFileName = 'app.js';
 

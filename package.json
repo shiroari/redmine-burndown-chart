@@ -1,37 +1,60 @@
 {
-	"name": "redmine-burndown-chart",
-	"version": "0.0.1",
-	"dependencies": {},
-	"devDependencies": {
-		"vinyl-source-stream": "latest",
+  "name": "redmine-burndown-chart",
+  "version": "0.0.1",
+  "devDependencies": {
+    "vinyl-source-stream": "latest",
     "del": "latest",
-		"gulp": "latest",
-		"gulp-load-plugins": "latest",
-		"gulp-bower": "latest",
-		"gulp-compass": "latest",
-		"gulp-autoprefixer": "latest",
-		"gulp-minify-css": "latest",
-		"gulp-cache": "latest",
-		"gulp-jest": "latest",
-		"gulp-size": "latest",
-		"gulp-useref": "latest",
-		"gulp-util": "latest",
-		"gulp-webserver": "latest",
-		"react": "latest",
+    "gulp": "latest",
+    "gulp-load-plugins": "latest",
+    "gulp-bower": "latest",
+    "gulp-compass": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-minify-css": "latest",
+    "gulp-cache": "latest",
+    "gulp-jest": "latest",
+    "gulp-size": "latest",
+    "gulp-useref": "latest",
+    "gulp-util": "latest",
+    "gulp-webserver": "latest",
+    "react": "latest",
     "flux": "latest",
-		"watchify": "latest",
-		"browserify": "latest",
-		"browserify-shim": "latest",
-		"babelify": "latest",
-		"babel-jest": "latest",
-		"nvd3": "latest"
-	},
-	"browserify": {
-		"transform": [
-      "browserify-shim", "babelify"
+    "watchify": "latest",
+    "browserify": "latest",
+    "browserify-shim": "latest",
+    "babelify": "latest",
+    "babel-runtime": "^5.1.11",
+    "babel-jest": "latest",
+    "nvd3": "latest",
+    "jest-cli": "latest"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim",
+      [
+        "babelify",
+        {
+          "stage": 0,
+          "optional": [
+            "runtime"
+          ]
+        }
+      ]
     ]
-	},
-	"browserify-shim": {
-		"jquery": "$"
-	}
+  },
+  "browserify-shim": {
+    "jquery": "$"
+  },
+  "scripts": {
+    "build": "BABEL_JEST_STAGE=0 gulp",
+    "test": "BABEL_JEST_STAGE=0 jest"
+  },
+  "jest": {
+    "scriptPreprocessor": "node_modules/babel-jest",
+    "testFileExtensions": [
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js"
+    ]
+  }
 }

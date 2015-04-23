@@ -1,15 +1,15 @@
 var React = require("react");
 
 var Action = React.createClass({
-  onClick: function(event){
+  onClick: function (event) {
     this.props.onClick(event);
   },
-  render: function() {
+  render: function () {
     return (
       <li>
         <a href="#" onClick={this.onClick}>
-					{React.Children.map(this.props.children, function(child) {
-							return child;
+					{React.Children.map(this.props.children, function (child) {
+            return child;
 					})}
         </a>
       </li>

@@ -1,116 +1,94 @@
 var React = require("react"),
-		$model = require('../ctrl');
+	AppDispatcher = require('../AppDispatcher'),
+	Settings = require('../Store').Settings,
+	Projects = require('../Store').Projects,
+	Queries = require('../Store').Queries,
+	App = require('../App');
 
 var ControlPanel = React.createClass({
 
-  getInitialState: function() {
-		return {
-      projects: [],
-      queries: [],
-      settingsOpened: false,
-      settings: $model.loadSettings()
-    };
-  },
+  getInitialState: function () {
 
-	componentDidMount: function() {
-
-		$model.updateProjects(this.onUpdateProjects.bind(this));
-
-    var self = this;
-
-    this.props.bind.on = function(){
-      self.state.settingsOpened = true;
-      self.setState(self.state);
+    return {
+			showSettings: Settings.showSettings,
+			settings: App.settings,
+      projectList: Projects.projectList,
+      queryList: Queries.queryList
     };
 
-  }, 
-
-  onUpdateProjects: function(event) {
-
-    this.state.projects = event.projects;
-
-    if (this.state.projects.length === 0){
-      this.state.settings.project = null;
-      this.state.settings.query = null;
-      this.setState(this.state);
-      return;
-    }
-
-    if (!this.state.settings.project){
-      this.state.settings.project = this.state.projects[0].id;
-    }
-
-    $model.updateQueries(this.onUpdateQueries.bind(this), {project: this.state.settings.project});
   },
 
-  onUpdateQueries: function(event) {
+  componentDidMount: function () {
 
-    this.state.queries = event.queries;
+		Settings.onChange(this.onSettingsChange);
 
-    if (this.state.queries.length === 0){
-      this.state.settings.query = null;
-      this.setState(this.state);
-      return;
-    }
+		Queries.onChange(this.onFiltersChange);
 
-    if (!this.state.settings.query){
-      this.state.settings.query = this.state.queries[0].id;
-    }
+  },
 
-    $model.update(this.state.settings);
+	onSettingsChange: function () {
+
+    this.state.showSettings = Settings.showSettings;
+
+    this.setState(this.state);
+
+  },
+
+  onFiltersChange: function () {
+
+    this.state.projectList = Projects.projectList;
+    this.state.queryList = Queries.queryList;
+    this.setState(this.state);
+
+  },
+
+  onUpdate: function () {
+
+		AppDispatcher.update();
+
+  },
+
+	onChangeProject: function (event) {
+
+		AppDispatcher.setActiveProject(event.target.value);
+
+	},
+
+  onChangeQuery: function (event) {
+
+		AppDispatcher.setActiveQuery(event.target.value);
+
+  },
+
+  onChange: function (event) {
+
+		this.state.settings[event.target.name] = event.target.value;
 
 		this.setState(this.state);
-  },
-
-  onSave: function(event) {
-    this.state.settingsOpened = false;
-		$model.updateProjects(this.onUpdateProjects.bind(this));
-  },
-
-  onUpdate: function(event) {
-		$model.update(this.state.settings);
-  },
-
-  onChange: function(event) {
-    this._updateSettings(event.target.name, event.target.value);
-    this.setState(this.state);
-  },
-
-  onChangeProject: function(event) {
-
-    this._updateSettings(event.target.name, event.target.value);
-
-    this.state.queries = [];
-    this.state.settings.query = null;
-
-    if (this.state.settings.project){
-      $model.updateQueries(this.onUpdateQueries.bind(this), {project: this.state.settings.project});
-      return;
-    }
-
-    this.setState(this.state);
-  },
-
-  onChangeQuery: function(event) {
-
-		this._updateSettings(event.target.name, event.target.value);
-
-    $model.update(this.state.settings);
 
   },
 
-  _updateSettings(name, value){
-		this.state.settings[name] = value;
-    $model.saveSettings(this.state.settings);
-  },
+	onSave: function (event) {
 
-  render: function() {
-    var projects = this.state.projects,
-      queries = this.state.queries,
+		Settings.showSettings = false;
+
+		this.state.showSettings = Settings.showSettings;
+
+		this.setState(this.state);
+
+		AppDispatcher.setSettings(this.state.settings);
+
+	},
+
+  render: function () {
+
+    var projects = this.state.projectList,
+      queries = this.state.queryList,
       state = this.state.settings;
+
     return (
 			<div className="form">
-      {(this.state.settingsOpened) ? (
+      {(this.state.showSettings) ? (
         <ul className='form-fields form-dialog'>
 					<li className="form-field">
 						<label htmlFor='redmineURI'>Redmine URI</label>
@@ -129,7 +107,7 @@ var ControlPanel = React.createClass({
           <li className="form-field">
 						<label htmlFor='project'>Project</label>
 						<select name='project' defaultValue={state.project} onChange={this.onChangeProject}>{
-              projects.map(function(opt){
+              projects.map(function (opt) {
                 return (
                   <option value={opt.id} selected={opt.id == state.project}>{opt.name}</option>
                 );
@@ -139,7 +117,7 @@ var ControlPanel = React.createClass({
 					<li className="form-field">
 						<label htmlFor='query'>Query</label>
 						<select name='query' defaultValue={state.query} onChange={this.onChangeQuery}>{
-              queries.map(function(opt){
+              queries.map(function (opt) {
                 return (
                   <option value={opt.id} selected={opt.id == state.query}>{opt.name}</option>
                 );
