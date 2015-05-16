@@ -111,7 +111,7 @@ gulp.task('serve', function () {
 
 // Robots.txt and favicon.ico
 gulp.task('extras', function () {
-  return gulp.src(['src/*.txt', 'src/*.ico'])
+  return gulp.src(['src/*.txt', 'src/*.png'])
     .pipe(gulp.dest('dist/'))
     .pipe(_.size());
 });
