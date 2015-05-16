@@ -1,13 +1,12 @@
 {
-	// Environments
-	"browser": true,
-	"browserify": true,
-	"jasmine": true,
-	"jquery": true,
-
-	// Custom Globals
-	"globals": {
-		"require": true,
-		"module": true
-	}
+  "browser": true,
+  "browserify": true,
+  "jasmine": true,
+  "jquery": true,
+  "devel": true,
+  "esnext": true,
+  "globals": {
+    "require": true,
+    "module": true
+  }
 }

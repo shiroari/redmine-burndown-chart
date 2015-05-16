@@ -1,0 +1,28 @@
+{
+    "preset": "crockford",
+
+    "fileExtensions": [".js"],
+
+    "excludeFiles": [
+        "node_modules/**",
+        "src/**/*.jsx"
+    ],
+
+    "disallowMixedSpacesAndTabs": "smart",
+    "validateIndentation": 2,
+    "maximumLineLength": 120,
+
+    "requireMultipleVarDecl": null,
+    "disallowMultipleVarDecl": null,
+
+    "safeContextKeyword": ["self"],
+
+    "disallowDanglingUnderscores": {
+        "allExcept": ["_saveSettings", "_settings"]
+    },
+
+    "validateJSDoc": {
+        "checkParamNames": true,
+        "requireParamTypes": true
+    }
+}
