@@ -83,7 +83,7 @@ var Settings = Object.assign({}, EventsMixin, {
 
     App.settings = this.settings;
 
-    return Promise.resolve(true);
+    return Promise.resolve();
 
   },
 
@@ -94,7 +94,7 @@ var Settings = Object.assign({}, EventsMixin, {
     Queries.query = this.settings.query;
     Projects.project = this.settings.project;
 
-    return Promise.resolve(true);
+    return Promise.resolve();
 
   }
 
@@ -201,7 +201,7 @@ var Queries = Object.assign({}, EventsMixin, {
 
     this.fireChange();
 
-    return Promise.resolve(true);
+    return Promise.resolve();
 
   },
 
@@ -245,8 +245,7 @@ var Issues = Object.assign({}, EventsMixin, {
       .then(function () {
         return Resources.getIssues({
           project: Projects.getProject().identifier,
-          query: Queries.query,
-          offset: 0
+          query: Queries.query
         });
       })
       .then(function (data) {
@@ -255,7 +254,7 @@ var Issues = Object.assign({}, EventsMixin, {
       })
       .catch(function (reason) {
         console.error(reason);
-        self.error = reason;
+        self.error = reason.statusText || 'Unknown error';
         self.fireChange();
       });
 

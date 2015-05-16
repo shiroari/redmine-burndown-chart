@@ -19,7 +19,7 @@ class App {
     var userSettings = localStorage.getItem('settings');
 
     try {
-      this._settings = JSON.parse(userSettings);
+      this._settings = userSettings ? JSON.parse(userSettings) : Object.assign({}, DefaultSettings);
     } catch (err){
       this._settings = Object.assign({}, DefaultSettings);
     }

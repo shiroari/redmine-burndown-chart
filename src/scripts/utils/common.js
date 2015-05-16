@@ -26,11 +26,23 @@ fn.truncDate = function (date) {
 
 fn.rewriteUri = function (uri, params = {}) {
   return uri.replace(/\{([^}]*)\}/g, function (str, name) {
-    if (params[name] === undefined){
+    if (params[name] === undefined || params[name] === null){
       return `{${name}}`;
     }
     return params[name];
   });
+};
+
+/**
+ * Effictive join two arrays together
+ *
+ * @see http://davidwalsh.name/combining-js-arrays
+ */
+fn.join = function (dst, src) {
+  var len = src.length;
+  for (var i = 0; i < len; i = i + 5000) {
+    dst.unshift.apply(dst, src.slice(i, i + 5000));
+  }
 };
 
 module.exports = fn;

@@ -24,9 +24,9 @@ describe('common', function () {
   });
 
   it('rewriteUri works with null', function () {
-    expect($utils.rewriteUri('/test?p1={paramName1}&p2={paramName2}', {
+    expect($utils.rewriteUri('/test?p1={paramName1}', {
       paramName1: null
-    })).toBe('/test?p1=');
+    })).toBe('/test?p1={paramName1}');
   });
 
   it('rewriteUri is safe', function () {
