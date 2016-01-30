@@ -1,5 +1,0 @@
-/dist
-node_modules/
-src/bower_components/
-.sass-cache/
-.DS_Store

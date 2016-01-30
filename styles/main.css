@@ -1,0 +1,65 @@
+/*
+$icon-font-path: "/bower_components/bootstrap-sass-official/assets/fonts/";
+@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+*/
+/*
+@media screen and (min-width: 768px) {}
+*/
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: #444;
+}
+
+header {
+  display: none;
+}
+
+#view {
+  margin: 0 auto;
+  width: 75%;
+}
+#view > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-content {
+  min-height: 120px;
+}
+
+.nvd3-chart {
+  height: 260px;
+}
+
+.nvd3-chart .msg {
+  text-align: center;
+  line-height: 260px;
+  margin: auto 0;
+  font-size: 14px;
+}
+
+mg-chart .mg_legend {
+  font-size: 10px;
+  margin-top: 6px;
+  margin-bottom: -6px;
+  margin-left: 80%;
+}
+
+.grid > .grid-cell-1 {
+  flex: 1 1 25%;
+}
+
+.grid > .grid-cell-2 {
+  flex: 1 1 75%;
+}
+
+.grid-cell-1,
+.grid-cell-2 {
+  box-sizing: border-box;
+}

@@ -1,5 +1,0 @@
-[include]
-
-[ignore]
-.*/node_modules/.*
-.*/dist/.*
