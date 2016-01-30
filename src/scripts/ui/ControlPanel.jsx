@@ -106,20 +106,20 @@ var ControlPanel = React.createClass({
 				<ul className={'form-fields ' + (this.state.settingsOpened ? 'faded' : '')}>
           <li className="form-field">
 						<label htmlFor='project'>Project</label>
-						<select name='project' defaultValue={state.project} onChange={this.onChangeProject}>{
+						<select name='project' value={state.project} onChange={this.onChangeProject}>{
               projects.map(function (opt) {
                 return (
-                  <option value={opt.id} selected={opt.id == state.project}>{opt.name}</option>
+                  <option key={opt.id} value={opt.id}>{opt.name}</option>
                 );
               })}
 						</select>
 					</li>
 					<li className="form-field">
 						<label htmlFor='query'>Query</label>
-						<select name='query' defaultValue={state.query} onChange={this.onChangeQuery}>{
+						<select name='query' value={state.query} onChange={this.onChangeQuery}>{
               queries.map(function (opt) {
                 return (
-                  <option value={opt.id} selected={opt.id == state.query}>{opt.name}</option>
+                  <option key={opt.id} value={opt.id}>{opt.name}</option>
                 );
               })}
 						</select>
