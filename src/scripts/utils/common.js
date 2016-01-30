@@ -24,7 +24,8 @@ fn.truncDate = function (date) {
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 };
 
-fn.rewriteUri = function (uri, params = {}) {
+fn.rewriteUri = function (uri, params) {
+  params = params || {};
   return uri.replace(/\{([^}]*)\}/g, function (str, name) {
     if (params[name] === undefined || params[name] === null){
       return `{${name}}`;

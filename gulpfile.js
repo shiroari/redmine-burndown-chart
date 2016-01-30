@@ -7,6 +7,7 @@ var gulp = require('gulp'),
   path = require('path'),
   browserify = require('browserify'),
   watchify = require('watchify'),
+  jest = require('jest-cli'),
   sourceFile = './src/scripts/main.js',
   destFolder = './dist/scripts',
   destFileName = 'app.js';
@@ -57,8 +58,6 @@ gulp.task('styles', function () {
       sass: 'src/styles',
       css: 'dist/styles'
     }))
-    //.pipe(_.autoprefixer('last 1 version'))
-    //.pipe(_.minifyCSS())
     .pipe(gulp.dest('dist/styles'))
     .pipe(_.size());
 });
@@ -71,17 +70,21 @@ gulp.task('html', function () {
     .pipe(_.size());
 });
 
-gulp.task('jest', function () {
+// Testing
+gulp.task('jest', function (done) {
   var nodeModules = path.resolve('./node_modules');
-  return gulp.src('src/scripts/**/__tests__/*')
-    .pipe(_.jest({
-      scriptPreprocessor: nodeModules + '/babel-jest',
-      unmockedModulePathPatterns: [nodeModules + '/react'],
-      globals: {
-        'BABEL_JEST_STAGE': 0,
-        'runtime': true
-      }
-    }));
+  var jestConfig = {
+    rootDir: 'src',
+    scriptPreprocessor: nodeModules + '/babel-jest',
+    unmockedModulePathPatterns: [nodeModules + '/react'],
+    globals: {
+      'BABEL_JEST_STAGE': 0,
+      'runtime': true
+    }
+  };
+  jest.runCLI({ config : jestConfig }, ".", function() {
+      done();
+  });
 });
 
 // Clean
@@ -94,9 +97,7 @@ gulp.task('clean', function (cb) {
 // Bundle
 gulp.task('bundle', ['styles', 'app'], function () {
   return gulp.src('./src/*.html')
-    .pipe(_.useref.assets())
-    //.pipe(_.useref.restore())
-    //.pipe(_.useref())
+    .pipe(_.useref())
     .pipe(gulp.dest('dist'));
 });
 

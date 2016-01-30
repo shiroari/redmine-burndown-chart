@@ -1,4 +1,5 @@
 var React = require("react"),
+		ReactDOM = require("react-dom"),
 		AppDispatcher = require('../AppDispatcher'),
 		Action = require("./Action.jsx"),
 		Card = require("./Card.jsx"),
@@ -7,14 +8,14 @@ var React = require("react"),
 		Chart = require("./NVD3Chart.jsx");
 
 var toggleSettings = function (){
-	AppDispatcher.toggleSettings()
+	AppDispatcher.toggleSettings();
 };
 
 var view = {
 
 	render: function(parent) {
 
-		React.render(
+		ReactDOM.render(
 			<div className="grid">
 				<Card name="Presets">
 					<Header>

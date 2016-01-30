@@ -1,31 +1,31 @@
 {
   "name": "redmine-burndown-chart",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
-    "vinyl-source-stream": "latest",
+    "babel-jest": "latest",
+    "babel-preset-react": "^6.3.13",
+    "babel-runtime": "^5.1.11",
+    "babelify": "latest",
+    "browserify": "latest",
+    "browserify-shim": "latest",
     "del": "latest",
+    "flux": "latest",
     "gulp": "latest",
-    "gulp-load-plugins": "latest",
-    "gulp-bower": "latest",
-    "gulp-compass": "latest",
     "gulp-autoprefixer": "latest",
-    "gulp-minify-css": "latest",
+    "gulp-bower": "latest",
     "gulp-cache": "latest",
-    "gulp-jest": "latest",
+    "gulp-compass": "latest",
+    "gulp-load-plugins": "latest",
     "gulp-size": "latest",
     "gulp-useref": "latest",
     "gulp-util": "latest",
     "gulp-webserver": "latest",
+    "jest-cli": "^0.8.2",
+    "nvd3": "1.8.2",
     "react": "latest",
-    "flux": "latest",
-    "watchify": "latest",
-    "browserify": "latest",
-    "browserify-shim": "latest",
-    "babelify": "latest",
-    "babel-runtime": "^5.1.11",
-    "babel-jest": "latest",
-    "nvd3": "latest",
-    "jest-cli": "latest"
+    "react-dom": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
   },
   "browserify": {
     "transform": [
@@ -33,9 +33,8 @@
       [
         "babelify",
         {
-          "stage": 0,
-          "optional": [
-            "runtime"
+          "presets": [
+            "react"
           ]
         }
       ]

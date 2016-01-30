@@ -1,8 +1,8 @@
-jest.dontMock('../ctrl');
+//jest.dontMock('../ctrl');
 
 describe('ctrl', function () {
 
-  var ctrl = require('../ctrl');
+  //var ctrl = require('../ctrl');
 
   it('loadSettings', function () {
 
