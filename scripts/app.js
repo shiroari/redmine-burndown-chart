@@ -35967,7 +35967,6 @@ var Chart = React.createClass({
       chartFunc = function (model) {
 
         d3.select('#' + id + ' svg').datum(transformBurndownData(model));
-        this.chart.dispatch.changeState(this.chart.state());
         this.chart.xAxis.tickValues(d3.range(model.startIndex, model.endIndex + 1)).tickFormat(function (d) {
           return DAYS[(model.start.getDay() - 1 + d) % 5];
         });
@@ -36026,7 +36025,6 @@ var Chart = React.createClass({
       chartFunc = function (model) {
 
         d3.select('#' + id + ' svg').datum(transformStackedData(model));
-        this.chart.dispatch.changeState(this.chart.state());
         this.chart.xAxis.tickValues(d3.range(model.startIndex, model.endIndex + 1)).tickFormat(function (d) {
           return DAYS[(model.start.getDay() - 1 + d) % 5];
         });
