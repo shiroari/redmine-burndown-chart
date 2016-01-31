@@ -169,7 +169,6 @@ var Chart = React.createClass({
 
         d3.select('#' + id + ' svg')
         .datum(transformBurndownData(model));
-        this.chart.dispatch.changeState(this.chart.state());
         this.chart.xAxis
         .tickValues(d3.range(model.startIndex, model.endIndex + 1))
         .tickFormat(function(d) {
@@ -245,7 +244,6 @@ var Chart = React.createClass({
 
         d3.select('#' + id + ' svg')
         .datum(transformStackedData(model));
-        this.chart.dispatch.changeState(this.chart.state());
         this.chart.xAxis
         .tickValues(d3.range(model.startIndex, model.endIndex + 1))
         .tickFormat(function(d) {
